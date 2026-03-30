@@ -3,17 +3,13 @@
 
 class SoundSensor {
 private:
-    int pin;          // Analog pin for sound input
+    int pin;
 
 public:
-    // Constructor
     SoundSensor(int sensorPin);
-
-    // Initialize sensor (if needed)
     void begin();
-
-    // Read current sound level
     int getSoundLevel();
+    bool isLoud(int threshold);  // ADD THIS
 };
 
 #endif
