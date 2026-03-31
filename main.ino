@@ -1,36 +1,23 @@
-#ifndef AUDIOPLAYER_H
-#define AUDIOPLAYER_H
+#include "SoundSensor.h"
+#include "SoundAnalyzer.h"
 
-#include <Arduino.h>
-#include <SoftwareSerial.h>
-#include <DFRobotDFPlayerMini.h>
+SoundSensor sensor(A0);
+SoundAnalyzer analyzer(200, 600);
 
-enum class PlayerState { STOPPED, PLAYING, PAUSED, ERROR };
+void setup() {
+    Serial.begin(9600);
+    sensor.begin();
+}
 
-class AudioPlayer {
-private:
-    SoftwareSerial* dfSerial;
-    DFRobotDFPlayerMini dfPlayer;
+void loop() {
+    int soundLevel = sensor.getSoundLevel();
 
-    PlayerState currentState;
-    int currentTrack;
-    int volumeLevel;
+    std::string result = analyzer.classifySound(soundLevel);
 
-    void printState();
+    Serial.print("Sound Level: ");
+    Serial.print(soundLevel);
+    Serial.print(" -> ");
+    Serial.println(result.c_str());
 
-public:
-    AudioPlayer(SoftwareSerial* serial);
-
-    void begin();
-
-    void playTrack(int trackNumber);
-    void pause();
-    void stop();
-    void nextTrack();
-    void previousTrack();
-    void setVolume(int level);
-
-    PlayerState getState() const;
-};
-
-#endif
+    delay(500);
+}
