@@ -9,10 +9,7 @@ private:
     int mediumThreshold;
 
 public:
-    // Constructor with thresholds
     SoundAnalyzer(int quiet, int medium);
-
-    // Analyze sound level and return category
     std::string classifySound(int soundLevel);
 };
 
